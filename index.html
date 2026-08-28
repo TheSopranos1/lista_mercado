@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asistente de Mercado Familiar</title>
+  <style>
+    :root {
+      --font-base: 18px;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --primary: #15803d;
+      --primary-hover: #166534;
+      --border-color: #cbd5e1;
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      touch-action: manipulation;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: var(--font-base);
+      line-height: 1.4;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      padding: 12px;
+      max-width: 800px;
+      margin: 0 auto;
+      padding-bottom: 50px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      background: linear-gradient(135deg, #15803d, #065f46);
+      color: white;
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .app-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+
+    .budget-compact {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .budget-label {
+      font-size: 1.05rem;
+      opacity: 0.95;
+      font-weight: 700;
+    }
+
+    .budget-amount {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #fef08a;
+      letter-spacing: -0.5px;
+    }
+
+    .budget-note {
+      font-size: 0.85rem;
+      color: #fef08a;
+      opacity: 0.95;
+      font-weight: 600;
+      text-align: right;
+      border-top: 1px solid rgba(255,255,255,0.25);
+      padding-top: 6px;
+      width: 100%;
+    }
+
+    .navigation-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .btn-back {
+      background: #334155;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-back:active {
+      transform: scale(0.97);
+      background: #0f172a;
+    }
+
+    .breadcrumb {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      background: #e2e8f0;
+      padding: 8px 16px;
+      border-radius: 30px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .grid-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .section-separator {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #fef08a;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: var(--shadow-sm);
+      margin-top: 10px;
+      margin-bottom: 4px;
+      border: 1px solid #334155;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background-color 0.15s, border-color 0.15s;
+    }
+
+    .card.static-card {
+      cursor: default;
+    }
+
+    .card:active:not(.static-card) {
+      border-color: var(--primary);
+      background-color: #f0fdf4;
+    }
+
+    .card-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      background: #f1f5f9;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .card-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .card-right {
+      text-align: right;
+      padding-left: 10px;
+    }
+
+    .card-price {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .card-price-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .card-arrow {
+      font-size: 1.3rem;
+      color: #94a3b8;
+      margin-left: 8px;
+    }
+
+    .card-gasolina-container {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .card-gasolina-note {
+      font-size: 0.8rem;
+      color: #854d0e;
+      background: #fef9c3;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      display: block;
+      border: 1px solid #fde047;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .product-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .product-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .product-qty {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #047857;
+      background: #ecfdf5;
+      padding: 3px 10px;
+      border-radius: 8px;
+      display: inline-block;
+      margin-left: 6px;
+    }
+
+    .product-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-top: 10px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .price-total-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .price-total-value {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-top">
+      <div class="header-left">
+        <span style="font-size: 1.8rem;">🛒</span>
+        <div class="app-title">Mi Mercado</div>
+      </div>
+    </div>
+    <div class="budget-compact">
+      <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+        <span class="budget-label">Inversión Fija:</span>
+        <span class="budget-amount">$ 750.000</span>
+      </div>
+      <div class="budget-note">
+        💡 Nota: Se suele gastar entre $40.000 y $60.000 más, los cuales salen de ingresos extras.
+      </div>
+    </div>
+  </header>
+
+  <div id="nav-bar" class="navigation-bar" style="display: none;">
+    <button class="btn-back" onclick="navigateBack()">
+      <span>⬅️</span> VOLVER
+    </button>
+    <div class="breadcrumb" id="breadcrumb-text">Categoría</div>
+  </div>
+
+  <main id="app-content">
+    <!-- Contenido dinámico renderizado con JS -->
+  </main>
+
+  <script>
+    const CATEGORIES = [
+      { id: 'Comida', nombre: 'Comida', icono: '🍎' },
+      { id: 'Aseo', nombre: 'Aseo', icono: '🧼' },
+      { id: 'Gasolina', nombre: 'Gasolina', icono: '⛽' }
+    ];
+
+    const SUBCATEGORY_ICONS = {
+      'Proteínas': '🥩',
+      'Frutas': '🍎',
+      'Agua y Hielo': '💧',
+      'Verduras': '🥦',
+      'Despensa': '🥫',
+      'Lácteos': '🧀',
+      'Carbohidratos': '🥔',
+      'Panadería y Galletas': '🍞'
+    };
+
+    // Consolidated products matching exact spreadsheet quantities and rounding rules
+    const consolidatedProducts = [
+      // --- ASEO ---
+      { nombre: 'Papel higiénico', cantidad: '6 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 8290 },
+      { nombre: 'Desodorante', cantidad: '2 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 23650 },
+      { nombre: 'Crema dental', cantidad: '3 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 11670 },
+      { nombre: 'Lavaloza', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 2750 },
+      { nombre: 'Detergente', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 10850 },
+      { nombre: 'Suavizante', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 6660 },
+      { nombre: 'Cuchillas de afeitar', cantidad: '2 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 5960 },
+
+      // --- AGUA Y HIELO ---
+      { nombre: 'Agua', cantidad: '14 und', categoria: 'Comida', subcategoria: 'Agua y Hielo', valor: 49000 },
+      { nombre: 'Hielo', cantidad: '8 und', categoria: 'Comida', subcategoria: 'Agua y Hielo', valor: 3200 },
+
+      // --- CARBOHIDRATOS ---
+      { nombre: 'Arroz', cantidad: '1 paca', categoria: 'Comida', subcategoria: 'Carbohidratos', valor: 44000 },
+      { nombre: 'Guineo verde', cantidad: '', categoria: 'Comida', subcategoria: 'Carbohidratos', valor: 15000 },
+      { nombre: 'Papa', cantidad: '6,06 kg', categoria: 'Comida', subcategoria: 'Carbohidratos', valor: 26168 },
+      { nombre: 'Plátano', cantidad: '4 paq', categoria: 'Comida', subcategoria: 'Carbohidratos', valor: 15600 },
+
+      // --- DESPENSA ---
+      { nombre: 'Aceite', cantidad: '4 L', categoria: 'Comida', subcategoria: 'Despensa', valor: 26290 },
+      { nombre: 'Azúcar', cantidad: '3,27 kg / paq', categoria: 'Comida', subcategoria: 'Despensa', valor: 14755 },
+      { nombre: 'Café', cantidad: '2 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 20000 },
+      { nombre: 'Mostaza', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 2200 },
+      { nombre: 'Panela', cantidad: '2 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 5200 },
+      { nombre: 'Pasta fideo', cantidad: '1 paq', categoria: 'Comida', subcategoria: 'Despensa', valor: 3832 },
+      { nombre: 'Sal y saleros', cantidad: '3 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 4330 },
+      { nombre: 'Salsa negra', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 2200 },
+      { nombre: 'Trifogón', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 2600 },
+
+      // --- FRUTAS ---
+      { nombre: 'Bananos', cantidad: '3 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 1500 },
+      { nombre: 'Limón', cantidad: '', categoria: 'Comida', subcategoria: 'Frutas', valor: 45000 },
+      { nombre: 'Manzana', cantidad: '3 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 22600 },
+      { nombre: 'Melón', cantidad: '', categoria: 'Comida', subcategoria: 'Frutas', valor: 35000 },
+      { nombre: 'Papaya', cantidad: '', categoria: 'Comida', subcategoria: 'Frutas', valor: 32000 },
+      { nombre: 'Pera', cantidad: '2 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 5300 },
+      { nombre: 'Tomate de árbol', cantidad: '4 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 16300 },
+
+      // --- LÁCTEOS ---
+      { nombre: 'Mantequilla', cantidad: '', categoria: 'Comida', subcategoria: 'Lácteos', valor: 1000 },
+      { nombre: 'Queso', cantidad: '1,17 kg', categoria: 'Comida', subcategoria: 'Lácteos', valor: 39824 },
+
+      // --- PANADERÍA Y GALLETAS ---
+      { nombre: 'Galletas', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Panadería y Galletas', valor: 5980 },
+      { nombre: 'Harina de maíz', cantidad: '1 kg', categoria: 'Comida', subcategoria: 'Panadería y Galletas', valor: 3500 },
+
+      // --- PROTEÍNAS ---
+      { nombre: 'Atún', cantidad: '6 und', categoria: 'Comida', subcategoria: 'Proteínas', valor: 27180 },
+      { nombre: 'Carne de cerdo', cantidad: '5,195 kg', categoria: 'Comida', subcategoria: 'Proteínas', valor: 97250 },
+      { nombre: 'Huevos', cantidad: '30 und', categoria: 'Comida', subcategoria: 'Proteínas', valor: 15000 },
+      { nombre: 'Pechuga de pollo', cantidad: '5,995 kg', categoria: 'Comida', subcategoria: 'Proteínas', valor: 84842 },
+      { nombre: 'Pierna pernil de pollo', cantidad: '1,58 kg', categoria: 'Comida', subcategoria: 'Proteínas', valor: 14157 },
+      { nombre: 'Salchichón', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Proteínas', valor: 11432 },
+
+      // --- VERDURAS ---
+      { nombre: 'Cebolla roja', cantidad: '502 g', categoria: 'Comida', subcategoria: 'Verduras', valor: 5100 },
+      { nombre: 'Cilantro y cebollín', cantidad: '', categoria: 'Comida', subcategoria: 'Verduras', valor: 3000 },
+      { nombre: 'Pepino', cantidad: '0,8 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 2560 },
+      { nombre: 'Pimentón', cantidad: '500 g', categoria: 'Comida', subcategoria: 'Verduras', valor: 2200 },
+      { nombre: 'Remolacha', cantidad: '0,95 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 3808 },
+      { nombre: 'Zanahoria', cantidad: '0,46 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 1456 }
+    ];
+
+    let currentView = 'CATEGORIES';
+    let selectedCategory = null;
+    let selectedSubcategory = null;
+
+    function formatMoney(amount) {
+      return '$ ' + amount.toLocaleString('es-CO');
+    }
+
+    function render() {
+      const appContent = document.getElementById('app-content');
+      const navBar = document.getElementById('nav-bar');
+      const breadcrumb = document.getElementById('breadcrumb-text');
+
+      appContent.innerHTML = '';
+
+      if (currentView === 'CATEGORIES') {
+        navBar.style.display = 'none';
+        renderCategoriesView(appContent);
+      } else if (currentView === 'SUBCATEGORIES') {
+        navBar.style.display = 'flex';
+        breadcrumb.textContent = selectedCategory;
+        renderSubcategoriesView(appContent);
+      } else if (currentView === 'PRODUCTS') {
+        navBar.style.display = 'flex';
+        breadcrumb.textContent = `${selectedCategory} ❯ ${selectedSubcategory}`;
+        renderProductsView(appContent);
+      }
+    }
+
+    function renderCategoriesView(container) {
+      const grid = document.createElement('div');
+      grid.className = 'grid-cards';
+
+      CATEGORIES.forEach(cat => {
+        if (cat.id === 'Gasolina') {
+          // Agregar separador antes de Gasolina
+          const separator = document.createElement('div');
+          separator.className = 'section-separator';
+          separator.innerHTML = `<span>⛽</span> Presupuesto Independiente de Gasolina: $70.000 ($10.000 hogar y $60.000 de papá) - No incluido en los $750.000 fijos.`;
+          grid.appendChild(separator);
+        }
+
+        const card = document.createElement('div');
+        
+        if (cat.id === 'Gasolina') {
+          card.className = 'card static-card';
+          const totalGas = 77000;
+          card.innerHTML = `
+            <div class="card-left">
+              <div class="card-icon">${cat.icono}</div>
+              <div style="flex: 1;">
+                <div class="card-title">${cat.nombre}</div>
+                <div class="card-gasolina-container">
+                  <div class="card-gasolina-note">💡 Hogar aportó $10.000 | Papá aportó $67.000</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-right">
+              <div class="card-price-label">Gasto Total</div>
+              <div class="card-price">${formatMoney(totalGas)}</div>
+            </div>
+          `;
+        } else if (cat.id === 'Aseo') {
+          card.className = 'card';
+          card.onclick = () => navigateToCategory(cat.id);
+          const itemsCategory = consolidatedProducts.filter(p => p.categoria === cat.id);
+          const totalCat = itemsCategory.reduce((sum, p) => sum + p.valor, 0);
+
+          card.innerHTML = `
+            <div class="card-left">
+              <div class="card-icon">${cat.icono}</div>
+              <div style="flex: 1;">
+                <div class="card-title">${cat.nombre}</div>
+              </div>
+            </div>
+            <div class="card-right">
+              <div class="card-price-label">Gasto Total</div>
+              <div class="card-price">${formatMoney(totalCat)}</div>
+            </div>
+            <div class="card-arrow">❯</div>
+          `;
+        } else if (cat.id === 'Comida') {
+          card.className = 'card';
+          card.onclick = () => navigateToCategory(cat.id);
+          const itemsCategory = consolidatedProducts.filter(p => p.categoria === cat.id);
+          const totalCat = itemsCategory.reduce((sum, p) => sum + p.valor, 0);
+
+          card.innerHTML = `
+            <div class="card-left">
+              <div class="card-icon">${cat.icono}</div>
+              <div style="flex: 1;">
+                <div class="card-title">${cat.nombre}</div>
+                <div class="card-gasolina-container">
+                  <div class="card-gasolina-note">💡 Hogar aportó $675.000 | Padres aportaron $35.000</div>
+                </div>
+              </div>
+            </div>
+            <div class="card-right">
+              <div class="card-price-label">Gasto Total</div>
+              <div class="card-price">${formatMoney(totalCat)}</div>
+            </div>
+            <div class="card-arrow">❯</div>
+          `;
+        }
+        grid.appendChild(card);
+      });
+
+      container.appendChild(grid);
+    }
+
+    function renderSubcategoriesView(container) {
+      const grid = document.createElement('div');
+      grid.className = 'grid-cards';
+
+      const itemsCategory = consolidatedProducts.filter(p => p.categoria === selectedCategory);
+      const subcatsMap = {};
+
+      itemsCategory.forEach(p => {
+        if (!subcatsMap[p.subcategoria]) {
+          subcatsMap[p.subcategoria] = 0;
+        }
+        subcatsMap[p.subcategoria] += p.valor;
+      });
+
+      // Ordenar subcategorías de mayor a menor costo
+      const sortedSubcats = Object.keys(subcatsMap).sort((a, b) => subcatsMap[b] - subcatsMap[a]);
+
+      sortedSubcats.forEach(subName => {
+        const totalSub = subcatsMap[subName];
+        const icon = SUBCATEGORY_ICONS[subName] || '🛒';
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = () => navigateToSubcategory(subName);
+
+        card.innerHTML = `
+          <div class="card-left">
+            <div class="card-icon">${icon}</div>
+            <div>
+              <div class="card-title">${subName}</div>
+              <div class="card-subtitle">Ver productos individuales</div>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="card-price-label">Subtotal</div>
+            <div class="card-price">${formatMoney(totalSub)}</div>
+          </div>
+          <div class="card-arrow">❯</div>
+        `;
+        grid.appendChild(card);
+      });
+
+      container.appendChild(grid);
+    }
+
+    function renderProductsView(container) {
+      const items = consolidatedProducts.filter(
+        p => p.categoria === selectedCategory && p.subcategoria === selectedSubcategory
+      );
+
+      items.forEach(product => {
+        const pCard = document.createElement('div');
+        pCard.className = 'product-card';
+
+        const qtyHtml = product.cantidad ? `<span class="product-qty">(${product.cantidad})</span>` : '';
+
+        pCard.innerHTML = `
+          <div class="product-header">
+            <div class="product-name">
+              ${product.nombre} ${qtyHtml}
+            </div>
+          </div>
+          <div class="product-details">
+            <span class="price-total-label">Total estimado</span>
+            <span class="price-total-value">${formatMoney(product.valor)}</span>
+          </div>
+        `;
+        container.appendChild(pCard);
+      });
+    }
+
+    function navigateToCategory(catId) {
+      selectedCategory = catId;
+      if (catId === 'Aseo') {
+        selectedSubcategory = 'Aseo';
+        currentView = 'PRODUCTS';
+      } else {
+        currentView = 'SUBCATEGORIES';
+      }
+      render();
+    }
+
+    function navigateToSubcategory(subName) {
+      selectedSubcategory = subName;
+      currentView = 'PRODUCTS';
+      render();
+    }
+
+    function navigateBack() {
+      if (currentView === 'PRODUCTS') {
+        if (selectedCategory === 'Aseo') {
+          currentView = 'CATEGORIES';
+          selectedCategory = null;
+          selectedSubcategory = null;
+        } else {
+          currentView = 'SUBCATEGORIES';
+          selectedSubcategory = null;
+        }
+      } else if (currentView === 'SUBCATEGORIES') {
+        currentView = 'CATEGORIES';
+        selectedCategory = null;
+      }
+      render();
+    }
+
+    window.onload = function() {
+      render();
+    };
+  </script>
+</body>
+</html>
