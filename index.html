@@ -164,7 +164,7 @@
       align-items: center;
       gap: 10px;
       box-shadow: var(--shadow-sm);
-      margin-top: 10px;
+      margin-top: 14px;
       margin-bottom: 4px;
       border: 1px solid #334155;
     }
@@ -379,74 +379,80 @@
       'Panadería y Galletas': '🍞'
     };
 
-    // Consolidated products matching exact spreadsheet quantities, rounding rules, and newly added items
+    // Consolidated products with updated prices and newly requested items
     const consolidatedProducts = [
       // --- ASEO ---
-      { nombre: 'Papel higiénico', cantidad: '6 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 8500 },
-      { nombre: 'Desodorante', cantidad: '2 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 24000 },
-      { nombre: 'Crema dental', cantidad: '3 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 12000 },
-      { nombre: 'Lavaloza', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 3000 },
-      { nombre: 'Detergente', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 11000 },
-      { nombre: 'Suavizante', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 7000 },
-      { nombre: 'Cuchillas de afeitar', cantidad: '2 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 6000 },
-      { nombre: 'Jabón', cantidad: '3 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 6000 },
+      { nombre: 'Papel higiénico', cantidad: '6 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 8290 },
+      { nombre: 'Desodorante', cantidad: '2 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 23650 },
+      { nombre: 'Crema dental', cantidad: '3 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 11670 },
+      { nombre: 'Lavaloza', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 2750 },
+      { nombre: 'Esponja lavaloza', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 1900 },
+      { nombre: 'Detergente', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 10850 },
+      { nombre: 'Suavizante', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 6660 },
+      { nombre: 'Jabón de coco', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 2100 },
+      { nombre: 'Cuchillas de afeitar', cantidad: '2 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 5960 },
+      { nombre: 'Jabón', cantidad: '1 und', categoria: 'Aseo', subcategoria: 'Aseo', valor: 5890 },
 
       // --- AGUA Y HIELO ---
       { nombre: 'Agua', cantidad: '14 und', categoria: 'Comida', subcategoria: 'Agua y Hielo', valor: 49000 },
-      { nombre: 'Hielo', cantidad: '8 und', categoria: 'Comida', subcategoria: 'Agua y Hielo', valor: 3000 },
+      { nombre: 'Hielo', cantidad: '7 und', categoria: 'Comida', subcategoria: 'Agua y Hielo', valor: 3000 },
 
       // --- CARBOHIDRATOS ---
       { nombre: 'Arroz', cantidad: '1 paca', categoria: 'Comida', subcategoria: 'Carbohidratos', valor: 44000 },
       { nombre: 'Guineo verde', cantidad: '', categoria: 'Comida', subcategoria: 'Carbohidratos', valor: 15000 },
-      { nombre: 'Papa', cantidad: '6,06 kg', categoria: 'Comida', subcategoria: 'Carbohidratos', valor: 26000 },
-      { nombre: 'Plátano', cantidad: '4 paq', categoria: 'Comida', subcategoria: 'Carbohidratos', valor: 16000 },
+      { nombre: 'Papa', cantidad: '6,06 kg', categoria: 'Comida', subcategoria: 'Carbohidratos', valor: 26168 },
+      { nombre: 'Plátano', cantidad: '4 paq', categoria: 'Comida', subcategoria: 'Carbohidratos', valor: 15600 },
 
       // --- DESPENSA ---
-      { nombre: 'Aceite', cantidad: '4 L', categoria: 'Comida', subcategoria: 'Despensa', valor: 26000 },
-      { nombre: 'Azúcar', cantidad: '3,27 kg / paq', categoria: 'Comida', subcategoria: 'Despensa', valor: 15000 },
+      { nombre: 'Aceite', cantidad: '4 L', categoria: 'Comida', subcategoria: 'Despensa', valor: 26290 },
+      { nombre: 'Azúcar', cantidad: '3,27 kg / paq', categoria: 'Comida', subcategoria: 'Despensa', valor: 14755 },
       { nombre: 'Café', cantidad: '2 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 20000 },
-      { nombre: 'Mostaza', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 2000 },
-      { nombre: 'Panela', cantidad: '2 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 5000 },
-      { nombre: 'Pasta fideo', cantidad: '1 paq', categoria: 'Comida', subcategoria: 'Despensa', valor: 4000 },
-      { nombre: 'Sal y saleros', cantidad: '3 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 4500 },
-      { nombre: 'Salsa negra', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 2000 },
-      { nombre: 'Trifogón', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 3000 },
+      { nombre: 'Mostaza', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 2200 },
+      { nombre: 'Panela', cantidad: '2 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 5200 },
+      { nombre: 'Pasta fideo', cantidad: '1 paq', categoria: 'Comida', subcategoria: 'Despensa', valor: 3832 },
+      { nombre: 'Sal y saleros', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 1550 },
+      { nombre: 'Salsa negra', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 2200 },
+      { nombre: 'Salsa de tomate', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 7623 },
+      { nombre: 'Trifogón', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 2600 },
       { nombre: 'Condimento', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Despensa', valor: 2000 },
 
       // --- FRUTAS ---
-      { nombre: 'Bananos', cantidad: '3 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 2000 },
+      { nombre: 'Bananos', cantidad: '3 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 1500 },
       { nombre: 'Limón', cantidad: '', categoria: 'Comida', subcategoria: 'Frutas', valor: 45000 },
-      { nombre: 'Manzana', cantidad: '3 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 23000 },
-      { nombre: 'Melón', cantidad: '', categoria: 'Comida', subcategoria: 'Frutas', valor: 35000 },
-      { nombre: 'Papaya', cantidad: '', categoria: 'Comida', subcategoria: 'Frutas', valor: 32000 },
-      { nombre: 'Pera', cantidad: '2 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 5500 },
-      { nombre: 'Tomate de árbol', cantidad: '4 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 16000 },
+      { nombre: 'Manzana', cantidad: '3 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 22600 },
+      { nombre: 'Melón', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 35000 },
+      { nombre: 'Papaya', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 32000 },
+      { nombre: 'Pera', cantidad: '2 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 5300 },
+      { nombre: 'Tomate de árbol', cantidad: '4 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 16300 },
+      { nombre: 'Maní + Uvas pasas', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Frutas', valor: 22000 },
 
       // --- LÁCTEOS ---
       { nombre: 'Mantequilla', cantidad: '', categoria: 'Comida', subcategoria: 'Lácteos', valor: 1000 },
-      { nombre: 'Queso', cantidad: '1,17 kg', categoria: 'Comida', subcategoria: 'Lácteos', valor: 40000 },
+      { nombre: 'Queso', cantidad: '1,17 kg', categoria: 'Comida', subcategoria: 'Lácteos', valor: 39824 },
 
       // --- PANADERÍA Y GALLETAS ---
-      { nombre: 'Galletas', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Panadería y Galletas', valor: 6000 },
-      { nombre: 'Harina de maíz', cantidad: '1 kg', categoria: 'Comida', subcategoria: 'Panadería y Galletas', valor: 4000 },
+      { nombre: 'Galletas', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Panadería y Galletas', valor: 5980 },
+      { nombre: 'Harina de maíz', cantidad: '1 kg', categoria: 'Comida', subcategoria: 'Panadería y Galletas', valor: 3500 },
+      { nombre: 'Harina de trigo', cantidad: '500 g', categoria: 'Comida', subcategoria: 'Panadería y Galletas', valor: 1890 },
 
       // --- PROTEÍNAS ---
-      { nombre: 'Atún', cantidad: '6 und', categoria: 'Comida', subcategoria: 'Proteínas', valor: 27000 },
-      { nombre: 'Carne de cerdo', cantidad: '5,195 kg', categoria: 'Comida', subcategoria: 'Proteínas', valor: 97000 },
+      { nombre: 'Atún', cantidad: '6 und', categoria: 'Comida', subcategoria: 'Proteínas', valor: 27180 },
+      { nombre: 'Carne de cerdo', cantidad: '5,195 kg', categoria: 'Comida', subcategoria: 'Proteínas', valor: 97250 },
       { nombre: 'Huevos', cantidad: '30 und', categoria: 'Comida', subcategoria: 'Proteínas', valor: 15000 },
-      { nombre: 'Pechuga de pollo', cantidad: '5,995 kg', categoria: 'Comida', subcategoria: 'Proteínas', valor: 85000 },
-      { nombre: 'Pierna pernil de pollo', cantidad: '1,58 kg', categoria: 'Comida', subcategoria: 'Proteínas', valor: 14000 },
-      { nombre: 'Salchichón', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Proteínas', valor: 11500 },
+      { nombre: 'Pechuga de pollo', cantidad: '5,995 kg', categoria: 'Comida', subcategoria: 'Proteínas', valor: 84842 },
+      { nombre: 'Pierna pernil de pollo', cantidad: '1,58 kg', categoria: 'Comida', subcategoria: 'Proteínas', valor: 14157 },
+      { nombre: 'Chorizo de pollo', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Proteínas', valor: 15393 },
+      { nombre: 'Salchichón', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Proteínas', valor: 11432 },
 
       // --- VERDURAS ---
-      { nombre: 'Cebolla roja', cantidad: '502 g', categoria: 'Comida', subcategoria: 'Verduras', valor: 5000 },
-      { nombre: 'Cilantro y cebollín', cantidad: '', categoria: 'Comida', subcategoria: 'Verduras', valor: 3000 },
-      { nombre: 'Pepino', cantidad: '0,8 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 3000 },
-      { nombre: 'Pimentón', cantidad: '500 g', categoria: 'Comida', subcategoria: 'Verduras', valor: 2000 },
-      { nombre: 'Remolacha', cantidad: '0,95 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 4000 },
-      { nombre: 'Zanahoria', cantidad: '0,46 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 1500 },
-      { nombre: 'Auyama', cantidad: '0,995 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 3000 },
-      { nombre: 'Lechuga', cantidad: '0,3 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 2000 }
+      { nombre: 'Cebolla roja', cantidad: '502 g', categoria: 'Comida', subcategoria: 'Verduras', valor: 5100 },
+      { nombre: 'Cilantro y cebollín', cantidad: '1 und', categoria: 'Comida', subcategoria: 'Verduras', valor: 3000 },
+      { nombre: 'Pepino', cantidad: '0,8 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 2560 },
+      { nombre: 'Pimentón', cantidad: '500 g', categoria: 'Comida', subcategoria: 'Verduras', valor: 2200 },
+      { nombre: 'Remolacha', cantidad: '0,95 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 3808 },
+      { nombre: 'Zanahoria', cantidad: '0,46 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 1456 },
+      { nombre: 'Auyama', cantidad: '0,995 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 2886 },
+      { nombre: 'Lechuga', cantidad: '0,3 kg', categoria: 'Comida', subcategoria: 'Verduras', valor: 1680 }
     ];
 
     let currentView = 'CATEGORIES';
